@@ -1,2 +1,3 @@
-# 2015-07-30-ASPB
-American Society for Plant Biologist Genomics workshop
+# 2015-08-19-HU_FASRC
+Harvard FAS Research Computing DataC Genomics workshop
+
