@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="en-us" />
+<title>/10345$2015-08-19-HU-FASRC</title>
+</head>
+<body>Welcome to MoPad!<br
+/><br
+/>This pad text is synchronized as you type, so that everyone viewing this page sees the same text.&nbsp; This allows you to collaborate seamlessly on documents!<br
+/><br
+/>Please be cognizant of whether you are using a public pad or private/team pad, and take appropriate precautions with data you post here!<br
+/><br
+/><br
+/>Welcome!<br
+/><br
+/>When you arrive here, please do the following:<br
+/><br
+/>1. Log into your Odyssey account<br
+/>2. Please execute the following commands (we'll explain these later!):<br
+/><br
+/># this first command make take 10 - 30 seconds. be patient<br
+/>export PRECOMPUTED=/n/regal/datac/precomputed<br
+/>srun --pty -p interact --mem=500 -t 0-0:30 /bin/bash<br
+/>cd ~; bash /n/regal/datac/setup_files_and_dirs.sh<br
+/>exit<br
+/><br
+/>3. Enjoy the workshop!<br
+/><br
+/><b>DAY2</b><br
+/><b>Get a Harvard University Wireless connection! Instructions at </b><a href="http://huit.harvard.edu/pages/harvard-wireless#Harvard"><b>http://huit.harvard.edu/pages/harvard-wireless#Harvard</b></a><b> Most importantly, DO NOT USE "Harvard Guest"</b><br
+/><br
+/># Some installation instructions for Day2:<br
+/>* Make sure you have FileZilla downloaded and properly configured as per instructions in the email from Bob Freeman (<a href="https://rc.fas.harvard.edu/resources/documentation/transferring-data/sftp-file-transfer/)">https://rc.fas.harvard.edu/resources/documentation/transferring-data/sftp-file-transfer/)</a>.<br
+/>* Make sure you have successfully downloaded IGV from <a href="https://www.broadinstitute.org/software/igv/download">https://www.broadinstitute.org/software/igv/download</a><br
+/><br
+/>* R and RStudio are also required for Day 2. If you do not have both installed successfully (or are unsure that it is) please come talk to one of us. Installation instructions below:<br
+/><br
+/><a href="http://devbioinfoguy.github.io/2015-08-19-HU_FASRC/install.html">http://devbioinfoguy.github.io/2015-08-19-HU_FASRC/install.html</a><br
+/>&nbsp;Please follow notes relevant to the operating system you are using<br
+/><br
+/><b>Who am I? Please add your info here:</b><br
+/>- Bob Freeman (@DevBioInfoGuy): Research computing facilitator at FASRC. In charge of consulting, outreach, and education. At this time I am not currently engaged in life sciences research, though I am currently investigating the positive or negative effects of training and self-support on effective HPC usage<br
+/><br
+/>- Heather Olins (@heatherolins): Grad student in OEB working on microbial ecology including metatranscriptomic and 16S amplicon data sets<br
+/><br
+/>-Ashwin Shetty:Post doctoral fellow in HSCRB working on developmental neuroscience.<br
+/><br
+/>Harsha Tarikere (@harsha_tts) Post doc in OEB working on ovary development in fly. I plan to use RNA seq based methods to determine the tissue specific expression level of genes.<br
+/><br
+/>-Kira Treibergs: grad student in OEB working on RNA sequencing to look at gene expression in a colonial marine invertebrate (bryozoan) that doesn't have a published genome.<br
+/><br
+/>=============<br
+/>Unix Shell<br
+/>- 2 streams of output: stdout and stderr; both are directed to the terminal<br
+/>- commands use flags to specify different options<br
+/>- use man to look at the manual and figure out what flags do<br
+/><br
+/>alias shows shortcut<br
+/>syntax: alias ll='ls -l'<br
+/>now you can use ll in place of ls -l<br
+/><br
+/>touch for a filename creates phantom file if non existent<br
+/><br
+/>without changing directories...<br
+/>list all files in the /bin directory that start with 'c'<br
+/>list all files in the /bin directory that contain 'a'<br
+/>list all files in the /bin directory that end in 'o'<br
+/>BONUS<br
+/><br
+/>*[ac]* searches all alphabets included in []<br
+/><br
+/>*[ac]d* searches ad or cd<br
+/><br
+/>!! last command.like up arrow<br
+/><br
+/>!$ last argument from the last command<br
+/><br
+/>from your home directory, show the contents of all the files in the untrimmed_fastq directory<br
+/><br
+/>GTGCGGGCAATTAACAG<br
+/>** make a new backup directory, make backups of 2 files, and copy to your new backup directory using 1 copy command<br
+/><br
+/>rm -rf removes a directory with files<br
+/><br
+/>./ to specify to look in the current directory<br
+/><br
+/>Java link for Mac OS X<br
+/><a href="https://www.java.com/en/download/mac_download.jsp">https://www.java.com/en/download/mac_download.jsp</a><br
+/><br
+/>* Search for the sequence GNATNACCACTTCC in SRR098026.fastq. Also have your search return the name of the sequence<br
+/>* Search for that sequence in all FASTQ files<br
+/><br
+/>Exercises:<br
+/>1) How many sample load dates are there?<br
+/>2) How many samples were loaded on each date?<br
+/>3) Filter the subsets into new files based on the load date.<br
+/>BONUS: add the header line to your file<br
+/><br
+/><br
+/>## ASIDE: ADDING DATE/TIME STAMP TO FILENAME<br
+/>DATE=`date`<br
+/>echo filename_$DATE<br
+/>filename_Thu Aug 20 17:24:09 EDT 2015&nbsp;<br
+/><br
+/># work on untrimmed FASTQs<br
+/>cd untrimmed_fastq<br
+/><br
+/># work on each FASTQ file in our directory<br
+/>for file in SRR09802*.fastq; do&nbsp;<br
+/>&nbsp; echo $file;&nbsp;<br
+/><br
+/>&nbsp; # grab all the bad read records<br
+/>&nbsp; grep -B1 -A2 NNNNNNNNNN $file &gt; $file-badreads.fastq<br
+/><br
+/>&nbsp; # grab the # of bad reads from our bad reads file<br
+/>&nbsp; grep -cH NNNNNNNNNN $file-badreads.fastq &gt; $file-badreads.counts<br
+/>done<br
+/><br
+/># grab all our bad read info to a summary file<br
+/>cat *.counts &gt; bad-reads.count.summary<br
+/>cat bad-reads.count.summary &gt;&gt; ../runlog.txt<br
+/><br
+/>cd ..<br
+/><br
+/># now work on SRA info<br
+/><br
+/><br
+/><ul><li>What filesystem are you currently on? Can you figure that out?</li
+><li>Use the df . command. Or df -h . command. What are you looking at?</li
+><li>Try moving to a different directory (e.g. cd ~ or cd /n/regal/datac/) and try this command again. What has changed?<br/><br
+/></li></ul
+>To get to the SAM files:<br
+/><br
+/>export PRECOMPUTED=/n/regal/datac/precomputed<br
+/>cd $PRECOMPUTED/lite/variant_calling/sam_files<br
+/><br
+/>source new-modules.sh<br
+/>module load samtools<br
+/><br
+/># show header<br
+/>samtools view -SH SRR097977_alignment.sam<br
+/><br
+/># look at actual reads<br
+/>samtools view -S SRR097977_alignment.sam | head -4<br
+/><br
+/># print only sequences&nbsp;<br
+/>samtools view -S SRR097977_alignment.sam | awk -F"\t" '{print $10}' |head<br
+/><br
+/><b>DAY2</b><br
+/><br
+/><br
+/><b>Variant calling commands:</b><br
+/><br
+/># start our variant calling session<br
+/>ssh rcusername@login.rc.fas.harvard.edu<br
+/>(enter password)<br
+/>(enter 2FA 6-digit code, no spaces)<br
+/>srun --pty -p interact --mem 500 -n 1 -N 1 -t 0-06:00 /bin/bash<br
+/><br
+/># get our data and expand archive<br
+/>wget <a href="http://devbioinfoguy.github.io/wrangling-genomics-HPC/data/variant_calling.tar.gz">http://devbioinfoguy.github.io/wrangling-genomics-HPC/data/variant_calling.tar.gz</a><br
+/>tar xvf variant_calling.tar.gz<br
+/><br
+/>cd variant_calling<br
+/><br
+/># This step helps with the speed of alignment<br
+/>bwa index data/ref_genome/ecoli_rel606.fasta&nbsp;&nbsp;&nbsp;&nbsp;<br
+/><br
+/># We will need the indexed reference file for variant calling as well.&nbsp;<br
+/>samtools faidx data/ref_genome/ecoli_rel606.fasta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br
+/><br
+/># grab our software<br
+/>source new-modules.sh<br
+/>module load bwa<br
+/>module load samtools<br
+/>module load bcftools<br
+/><br
+/># create output paths<br
+/>mkdir -p results/sai<br
+/>mkdir -p results/sam<br
+/>mkdir -p results/bam<br
+/>mkdir -p results/bcf<br
+/>mkdir -p results/vcf<br
+/><br
+/># see the file that we'll work on<br
+/>ls -alh ~/dc_workshop/variant_calling/data/trimmed_fastq/SRR098283.fastq_trim.fastq<br
+/><br
+/># do the bwa alignment<br
+/>bwa aln data/ref_genome/ecoli_rel606.fasta \<br
+/>&nbsp;../data/trimmed_fastq/SRR098283.fastq_trim.fastq &gt; results/sai/SRR098283.trimmed.aligned.sai<br
+/><br
+/># convert output to SAM format<br
+/>bwa samse data/ref_genome/ecoli_rel606.fasta \<br
+/>&nbsp;results/sai/SRR098283.trimmed.aligned.sai \<br
+/>&nbsp;../data/trimmed_fastq/SRR098283.fastq_trim.fastq &gt; \<br
+/>results/sam/SRR098283.trimmed.aligned.sam<br
+/><br
+/># quick look at SAM file<br
+/>head results/sam/SRR098283.trimmed.aligned.sam<br
+/><br
+/>picard tools SAM flag<br
+/><a href="https://broadinstitute.github.io/picard/explain-flags.html">https://broadinstitute.github.io/picard/explain-flags.html</a><br
+/><br
+/><br
+/># Convert the SAM file to BAM format<br
+/>samtools view -S -b \<br
+/>results/sam/SRR098283.trimmed.aligned.sam &gt; \<br
+/>&nbsp;results/bam/SRR098283.trimmed.aligned.bam<br
+/><br
+/><br
+/># sort BAM file<br
+/>samtools sort -O bam -T temp.prefix \<br
+/>&nbsp;results/bam/SRR098283.trimmed.aligned.bam &gt; \<br
+/>&nbsp;results/bam/SRR098283.trimmed.aligned.sorted.bam<br
+/><br
+/># Index the BAM file for visualization with IGV<br
+/>samtools index results/bam/SRR098283.trimmed.aligned.sorted.bam<br
+/><br
+/># first pass on variant calling by counting read coverage with samtools mpileup:<br
+/>samtools mpileup -g -f data/ref_genome/ecoli_rel606.fasta \<br
+/>&nbsp; results/bam/SRR098283.trimmed.aligned.sorted.bam &gt; results/bcf/SRR098283_raw.bcf<br
+/><br
+/># Do the SNP calling with bcftools:<br
+/>bcftools call -vc -O b results/bcf/SRR098283_raw.bcf \<br
+/>&nbsp;&gt;&nbsp; results/bcf/SRR098283_variants.bcf<br
+/><br
+/># Filter the SNPs for the final output in VCF format, using vcfutils.pl:<br
+/>bcftools view results/bcf/SRR098283_variants.bcf \<br
+/>&nbsp;| vcfutils.pl varFilter - &gt; \<br
+/>results/vcf/SRR098283_final_variants.vcf<br
+/><br
+/># Explore the VCF format...<br
+/>less results/vcf/SRR098283_final_variants.vcf<br
+/><br
+/><b>One "Liked This"</b><br
+/>tree command is, embarassingly, life changing! seconded! +1+1+1<br
+/>also, the additional description about quality score really cleared up stuff from yesterday seconded<br
+/>Learning how to visualize files<br
+/>Running fastqc on fastq files!!!+!<br
+/>The&nbsp; content this morning as spot on-- alignment, qc, and automation were exactly what I wanted to learn.<br
+/>Documentation on github is awesome!agreed+1+1<br
+/>Tree is my new favorite unix command.&nbsp; love it!<br
+/>I feel more confident looking at/understanding sam and bam files. I learned tools that I will be able to apply to my own research, and I also love the tree command!<br
+/>Explanation of the fastqc report was incredibly helpful(agree!)<br
+/>First time doing an alignment in unix!<br
+/>Radhika was good!<br
+/>Radhika is great+1<br
+/>Easy to intuitively follow the work flow<br
+/>Instructor was thorough, everything we learned was super useful<br
+/>Learning the individual steps for processing sequencing data from quality control to sam and bam files was extremely helpful<br
+/>Instructor was really good at clearly explaining material&nbsp;<br
+/>running files on odyssey&nbsp;<br
+/><br
+/><b>One "Needs Improvement"</b><br
+/>Making a flow chart of overall work flow/ how we change files/ where we move them would be extremely helpful to look at as an overview BEFORE we start a section.<br
+/>trying to cover too much material in the given time, perhaps+1<br
+/>Trying to troubleshoot scripts<br
+/>Wish we had another day tomorrow, barely following along, would like the chance to synthesize what we're covering and expand tomorrow<br
+/>Well, it was too much stuff, I think I won't be able to apply all these myself. But it was good to get exposed :)<br
+/>Not enough time on the first lesson today. I could have spent the entire day on it.&nbsp;<br
+/>Although this may be addressed later on, I would have liked to see a solution to the exercise in script writing given just before lunch<br
+/>It was fast for all the material<br
+/>I had problems with weird bugs on my command line input when the line overlapped and when I used the up arrow to referenced a recently inputted command that had an error in it.&nbsp; This meant I had to retype by hand some of the longer commands, and this is where I found myself getting a bit behind.&nbsp;&nbsp;<br
+/>More time on script writing<br
+/>Give longer classes<br
+/>I would like to know a little bit more about how to search/work with the VCF once we have it, though obviously we didn't have the time<br
+/>I felt rushed through the last section today. It is important material that I want to understand thoroughly and I feel like I've only grasped the very surface.<br
+/>The first class was awesome and would have helped with more time.&nbsp;<br
+/>You addressed this already, but I wish there had been information on how to handle RNAseq data<br
+/>more time on writing script and handling of errors<br
+/>make layout of files/folders for the exercises clearer at the beginning (easy to get lost with multiple "data", "results" folders etc)<br
+/>More time working through script writing would be helpful +1 &lt;- maybe include more time for hands-on help during script writing<br
+/><b>Day 2 Afternoon: R workflow and visualization</b><br
+/><br
+/>install.packages("dplyr")<br
+/><br
+/>Exercise I:<br
+/>Create a dataframe containing only generation and clade columns, for the first four entries in the metadata table.<br
+/>Bonus: include row names in your new dataframe<br
+/><br
+/>Exercise 2:<br
+/># Create a new metadata file with only values from every other row of the&nbsp; original metadata table<br
+/><br
+/>There is no way to include row names with dplyr functions based on this link from last year:<br
+/><a href="https://github.com/hadley/dplyr/issues/366">https://github.com/hadley/dplyr/issues/366</a><br
+/><br
+/><br
+/><b>One "Liked This"</b><br
+/>Better pace, easy to follow, very useful Rcode<br
+/>Very clear explanations of basic R code<br
+/>Better understanding the R command line<br
+/>Great overview of RStudio, as someone who had worked with R without it, VERY useful<br
+/>Really enjoyed going through R syntax and vocab. It was the perfect speed for me.<br
+/>Good pace, easy to follow.<br
+/>Dplyr is a new package for me and I'm excited to start using it with my data. Mita did a really good job presenting this whole section, thanks!&nbsp;<br
+/>I have used R before but had never delved into tools for working with genomic data. This has given me an introduction to tools that I will be exploring to manage my metadata<br
+/>R was great<br
+/>The online resources are very thorough and I will definitely be referencing them in the future<br
+/>I now feel more comfortable with the R syntax<br
+/>Piping in R is neat<br
+/><b>One "Needs Improvement"</b><br
+/>I did R Studio basics in software carpentry so would have liked more data manipulation<br
+/>In all, too much information being jammed into two days...needs to be longer or less ambitious<br
+/>This was more of an introduction to R than to R for genomics; I would have liked to see some more specific ways we could visualize, say the output of this morning session, in R+1+1<br
+/>This class needs to be a full week.&nbsp; The R section was difficult for someone with no background with the program<br
+/>The R section got out of hand because of issues with installing the packages. I enjoyed just watching, though.<br
+/>Some of the timing could be improved-- I think more time on the more complex sections (graphing, etc.) and less time on the beginning section with the intro to the language might be better.<br
+/>Ran out of time to learn plotting!<br
+/>The R studio was really helful. I would have liked more time with the variant calling.&nbsp;<br
+/>I would have liked to spend less time learning strictly about R, and more about how it could be applied with relevance to data we may encounter regularly<br
+/>I&nbsp; would have liked to spend less time learning strictly about R, and more&nbsp; about how it could be applied with relevance to data we may encounter&nbsp; regularly<br
+/>I've lost track of the number of times instructors told us to just read some manual; that isn't why we're here, and definitely doesn't help us in the moment if you're referring to material we're going to read about in the future (supposedly)<br
+/>Maybe greater emphasis on plotting<br
+/>Overall - I think it was just too much (all good) information for 2 days<br
+/>I think it would be better to have a separate R class&nbsp;<br
+/>for R basics. Personally I would have benefited more during this workshop from learning how to use git in R and how to run R on the cluster.<br
+/>It would nice if the workshop is spread over 5 morning sessions instead of whole day.<br
+/>Need some more time to test out scripts<br
+/>need more time to get plots working<br
+/>It would be nice to have basic R-skills be a separate workshop and perhaps a pre requisite for this course so that we can spend more time on the tools useful for genomic/NGS datasets&nbsp;<br
+/>If time allows, going over apply functions would be quite useful as these work better for processing large datasets but are confusing to write<br
+/><b>END OF WORKSHOP SURVEY</b><br
+/><a href="http://ucbpsych.qualtrics.com/SE/?SID=SV_emTN9ee5rKiI5Bb">http://ucbpsych.qualtrics.com/SE/?SID=SV_emTN9ee5rKiI5Bb</a><br
+/><br
+/><b>End of workshop resources</b><br
+/>tmux crash course: <a href="https://robots.thoughtbot.com/a-tmux-crash-course">https://robots.thoughtbot.com/a-tmux-crash-course</a><br
+/><br
+/>Addendum on scripting:<br
+/>The 'set -x' option in your script is great for debugging. While you are developing your script and testing it, this command, which should be placed on its own line, will cause the shell to print every command before it is exectued. This way, if there is an error, you'll know exactly which command caused your script to fail.<br
+/><br
+/><br
+/><br
+/></body>
+</html>
